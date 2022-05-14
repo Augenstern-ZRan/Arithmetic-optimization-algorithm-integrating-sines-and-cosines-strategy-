@@ -1,19 +1,19 @@
-%Çå¿Õ»·¾³±äÁ¿
+%æ¸…ç©ºç¯å¢ƒå˜é‡
 clear;
 close all;
 clc;
 
-Solution_no=30; %ÖÖÈº´óĞ¡
-% F_name='F1';    %Ä¿±êº¯ÊıÃû
-M_Iter=500;     %×î´óµü´ú´ÎÊı
+Solution_no=30; %ç§ç¾¤å¤§å°
+% F_name='F1';    %ç›®æ ‡å‡½æ•°å
+M_Iter=500;     %æœ€å¤§è¿­ä»£æ¬¡æ•°
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 
-for k =1:3 %£¨ÓÃÓÚ×÷Í¼£¬Ã¿´ÎÔËĞĞ²âÊÔ3¸öº¯Êı£©
-    F_name=k;    %Ä¿±êº¯ÊıÃû £¨´Ë´¦½«Get_Functions_detailsÖĞµÄÏàÓ¦º¯ÊıÃû¸ÄÎªÊı×Ö¼´¿Éµ÷ÓÃ£©
-    [LB,UB,Dim,F_obj]=Get_Functions_details(F_name); %»ñÈ¡Ä¿±êº¯Êı
+for k =1:3 %ï¼ˆç”¨äºä½œå›¾ï¼Œæ¯æ¬¡è¿è¡Œæµ‹è¯•3ä¸ªå‡½æ•°ï¼‰
+    F_name=k;    %ç›®æ ‡å‡½æ•°å ï¼ˆæ­¤å¤„å°†Get_Functions_detailsä¸­çš„ç›¸åº”å‡½æ•°åæ”¹ä¸ºæ•°å­—å³å¯è°ƒç”¨ï¼‰
+    [LB,UB,Dim,F_obj]=Get_Functions_details(F_name); %è·å–ç›®æ ‡å‡½æ•°
 
-    %ÔËĞĞËã·¨£¨30´Î£©
-    test_iteration = 2;
+    %è¿è¡Œç®—æ³•ï¼ˆ30æ¬¡ï¼‰
+    test_iteration = 30;
 
     PSO_fmins = zeros(1,test_iteration);
     PSO_curves = zeros(test_iteration,M_Iter);
@@ -62,7 +62,7 @@ for k =1:3 %£¨ÓÃÓÚ×÷Í¼£¬Ã¿´ÎÔËĞĞ²âÊÔ3¸öº¯Êı£©
         fprintf('\b\b%d',i);
     end
 
-    %»æÖÆ½á¹û
+    %ç»˜åˆ¶ç»“æœ
     subplot(1,3,k);
     %  axis([-inf,inf,1e-320,1e+5]);
     temp = [1,50,100,150,200,250,300,350,400,450,500];
@@ -82,41 +82,41 @@ for k =1:3 %£¨ÓÃÓÚ×÷Í¼£¬Ã¿´ÎÔËĞĞ²âÊÔ3¸öº¯Êı£©
 
 
     % title('Convergence curve')
-    xlabel('µü´ú´ÎÊı');
-    ylabel('ÊÊÓ¦¶ÈÖµ');
+    xlabel('è¿­ä»£æ¬¡æ•°');
+    ylabel('é€‚åº”åº¦å€¼');
     axis tight
     legend('PSO','GWO','WOA','SSA','AOA','SCAAOA');
     axis square;
 end
 
-%´òÓ¡½á¹û
+%æ‰“å°ç»“æœ
 
 % fprintf('\n');
-% fprintf('Ä¿±êº¯Êı£º%s\n',F_name);
-% fprintf('²âÊÔ´ÎÊı£º%d\n',test_iteration);
+% fprintf('ç›®æ ‡å‡½æ•°ï¼š%s\n',F_name);
+% fprintf('æµ‹è¯•æ¬¡æ•°ï¼š%d\n',test_iteration);
 % 
 % fprintf('\n');
-% fprintf('PSOÇóµÃÆ½¾ùÖµÎª:%.2E\n',mean(PSO_fmins));
-% fprintf('PSOÇóµÃ±ê×¼²îÎª:%.2E\n',std(PSO_fmins));
+% fprintf('PSOæ±‚å¾—å¹³å‡å€¼ä¸º:%.2E\n',mean(PSO_fmins));
+% fprintf('PSOæ±‚å¾—æ ‡å‡†å·®ä¸º:%.2E\n',std(PSO_fmins));
 % 
 % fprintf('\n');
-% fprintf('GWOÇóµÃÆ½¾ùÖµÎª:%.2E\n',mean(GWO_fmins));
-% fprintf('GWOÇóµÃ±ê×¼²îÎª:%.2E\n',std(GWO_fmins));
+% fprintf('GWOæ±‚å¾—å¹³å‡å€¼ä¸º:%.2E\n',mean(GWO_fmins));
+% fprintf('GWOæ±‚å¾—æ ‡å‡†å·®ä¸º:%.2E\n',std(GWO_fmins));
 % 
 % fprintf('\n');
-% fprintf('WOAÇóµÃÆ½¾ùÖµÎª:%.2E\n',mean(WOA_fmins));
-% fprintf('WOAÇóµÃ±ê×¼²îÎª:%.2E\n',std(WOA_fmins));
+% fprintf('WOAæ±‚å¾—å¹³å‡å€¼ä¸º:%.2E\n',mean(WOA_fmins));
+% fprintf('WOAæ±‚å¾—æ ‡å‡†å·®ä¸º:%.2E\n',std(WOA_fmins));
 % 
 % fprintf('\n');
-% fprintf('SSAÇóµÃÆ½¾ùÖµÎª:%.2E\n',mean(SSA_fmins));
-% fprintf('SSAÇóµÃ±ê×¼²îÎª:%.2E\n',std(SSA_fmins));
+% fprintf('SSAæ±‚å¾—å¹³å‡å€¼ä¸º:%.2E\n',mean(SSA_fmins));
+% fprintf('SSAæ±‚å¾—æ ‡å‡†å·®ä¸º:%.2E\n',std(SSA_fmins));
 % 
 % fprintf('\n');
-% fprintf('AOAÇóµÃÆ½¾ùÖµÎª:%.2E\n',mean(AOA_fmins));
-% fprintf('AOAÇóµÃ±ê×¼²îÎª:%.2E\n',std(AOA_fmins));
+% fprintf('AOAæ±‚å¾—å¹³å‡å€¼ä¸º:%.2E\n',mean(AOA_fmins));
+% fprintf('AOAæ±‚å¾—æ ‡å‡†å·®ä¸º:%.2E\n',std(AOA_fmins));
 % 
 % fprintf('\n');
-% fprintf('SCAAOAÇóµÃÆ½¾ùÖµÎª:%.2E\n',mean(SCAAOA_fmins));
-% fprintf('SCAAOAÇóµÃ±ê×¼²îÎª:%.2E\n',std(SCAAOA_fmins));
+% fprintf('SCAAOAæ±‚å¾—å¹³å‡å€¼ä¸º:%.2E\n',mean(SCAAOA_fmins));
+% fprintf('SCAAOAæ±‚å¾—æ ‡å‡†å·®ä¸º:%.2E\n',std(SCAAOA_fmins));
 
 
