@@ -1,77 +1,81 @@
-%% »ùÓÚÖÇÄÜËã·¨ÓÅ»¯µÄSVM·ÖÀàËã·¨¡£
+%% åŸºäºæ™ºèƒ½ç®—æ³•ä¼˜åŒ–çš„SVMåˆ†ç±»ç®—æ³•ã€‚
 
-%% Çå¿Õ»·¾³±äÁ¿
+%% æ¸…ç©ºç¯å¢ƒå˜é‡
 close all;
 clear;
 clc;
 
-%% Êı¾İÌáÈ¡
+%% æ•°æ®æå–
 
-% ÑµÁ·¼¯
+% è®­ç»ƒé›†
 Training_Data = xlsread('zhishi.xls','Training_Data','A2:F259');
 train = Training_Data(:,1:end-1);
 train_labels = Training_Data(:,end);
 
-% ²âÊÔ¼¯
+% æµ‹è¯•é›†
 Test_Data = xlsread('zhishi.xls','Test_Data','A2:F146');
 test = Test_Data(:,1:end-1);
 test_labels = Test_Data(:,end);
 
-%% Êı¾İÔ¤´¦Àí
-% Êı¾İÔ¤´¦Àí,½«ÑµÁ·¼¯ºÍ²âÊÔ¼¯¹éÒ»»¯µ½[0,1]Çø¼ä
+%% æ•°æ®é¢„å¤„ç†
+% æ•°æ®é¢„å¤„ç†,å°†è®­ç»ƒé›†å’Œæµ‹è¯•é›†å½’ä¸€åŒ–åˆ°[0,1]åŒºé—´
 
 [mtrain,ntrain] = size(train);
 [mtest,ntest] = size(test);
 
 dataset = [train;test];
 
-% mapminmaxÎªMATLAB×Ô´øµÄ¹éÒ»»¯º¯Êı
+% mapminmaxä¸ºMATLABè‡ªå¸¦çš„å½’ä¸€åŒ–å‡½æ•°
 [dataset_scale,ps] = mapminmax(dataset',0,1);
 dataset_scale = dataset_scale';
 
 train = dataset_scale(1:mtrain,:);
 test = dataset_scale( (mtrain+1):(mtrain+mtest),: );
 
-%% ÖÇÄÜËã·¨ÓÅ»¯SVM²ÎÊı
+%% æ™ºèƒ½ç®—æ³•ä¼˜åŒ–SVMå‚æ•°
 tic
-%%  ÓÅ»¯Ëã·¨²ÎÊıÉèÖÃ
-% ¶¨ÒåÓÅ»¯²ÎÊıµÄ¸öÊı£¬ÔÚ¸Ã³¡¾°ÖĞ£¬ÓÅ»¯²ÎÊıµÄ¸öÊıdimÎª2 ¡£
-% ¶¨ÒåÓÅ»¯²ÎÊıµÄÉÏÏÂÏŞ£¬ÈçcµÄ·¶Î§ÊÇ[0.01, 1]£¬ gµÄ·¶Î§ÊÇ[2^-5, 2^5]£¬ÄÇÃ´²ÎÊıµÄÏÂÏŞlb=[0.01, 2^-5]£»²ÎÊıµÄÉÏÏŞub=[1, 2^5]¡£
-%Ä¿±êº¯Êı
+%%  ä¼˜åŒ–ç®—æ³•å‚æ•°è®¾ç½®
+% å®šä¹‰ä¼˜åŒ–å‚æ•°çš„ä¸ªæ•°ï¼Œåœ¨è¯¥åœºæ™¯ä¸­ï¼Œä¼˜åŒ–å‚æ•°çš„ä¸ªæ•°dimä¸º2 ã€‚
+% å®šä¹‰ä¼˜åŒ–å‚æ•°çš„ä¸Šä¸‹é™ï¼Œå¦‚cçš„èŒƒå›´æ˜¯[0.01, 1]ï¼Œ gçš„èŒƒå›´æ˜¯[2^-5, 2^5]ï¼Œé‚£ä¹ˆå‚æ•°çš„ä¸‹é™lb=[0.01, 2^-5]ï¼›å‚æ•°çš„ä¸Šé™ub=[1, 2^5]ã€‚
+%ç›®æ ‡å‡½æ•°
 fun = @getObjValue; 
-% ÓÅ»¯²ÎÊıµÄ¸öÊı (c¡¢g)
+% ä¼˜åŒ–å‚æ•°çš„ä¸ªæ•° (cã€g)
 dim = 2;
-% ÓÅ»¯²ÎÊıµÄÈ¡ÖµÏÂÏŞ
+% ä¼˜åŒ–å‚æ•°çš„å–å€¼ä¸‹é™
 % lb = [0.01, 0.01];
 % ub = [1000, 1000];
 
 lb=0.01;
 ub = 1000;
 
-%%  ²ÎÊıÉèÖÃ
-pop =30; %ÖÖÈºÊıÁ¿
-Max_iteration=50;%×î´óµü´ú´ÎÊı     
+% äº¤å‰éªŒè¯å‚æ•°è®¾ç½®ï¼ˆå…³é—­äº¤å‰éªŒè¯æ—¶è®¾ç½®ä¸º[]ï¼‰
+kfolds = 5;
 
-%% ÓÅ»¯(ÕâÀïÖ÷Òªµ÷ÓÃº¯Êı)
+%%  å‚æ•°è®¾ç½®
+pop =30; %ç§ç¾¤æ•°é‡
+Max_iteration=50;%æœ€å¤§è¿­ä»£æ¬¡æ•°    
+
+
+%% ä¼˜åŒ–(è¿™é‡Œä¸»è¦è°ƒç”¨å‡½æ•°)
 [Best_score,Best_pos,curve]=AOA(pop,Max_iteration,lb,ub,dim,fun); 
 c = Best_pos(1, 1);  
 g = Best_pos(1, 2); 
 toc
-% ÓÃÓÅ»¯µÃµ½c,gÑµÁ·ºÍ²âÊÔ
+% ç”¨ä¼˜åŒ–å¾—åˆ°c,gè®­ç»ƒå’Œæµ‹è¯•
 cmd = ['-s 0 -t 2 ', '-c ', num2str(c), ' -g ', num2str(g), ' -q'];
 model = libsvmtrain(train_labels, train, cmd);
 
-%% SVMÍøÂçÔ¤²â
+%% SVMç½‘ç»œé¢„æµ‹
 [predict_label, accuracy,decision_values] = libsvmpredict(test_labels, test, model);
-%% ½á¹û·ÖÎö
+%% ç»“æœåˆ†æ
 figure;
 hold on;
 plot(test_labels,'o');
 plot(predict_label,'r*');
-xlabel('²âÊÔ¼¯Ñù±¾','FontSize',12);
-ylabel('Àà±ğ±êÇ©','FontSize',12);
-legend('Êµ¼Ê²âÊÔ¼¯·ÖÀà','Ô¤²â²âÊÔ¼¯·ÖÀà');
-% title('²âÊÔ¼¯µÄÊµ¼Ê·ÖÀàºÍÔ¤²â·ÖÀàÍ¼','FontSize',12);
-title(['×îÖÕÔ¤²â×¼È·ÂÊ£º',num2str(accuracy(1)),'%']);
+xlabel('æµ‹è¯•é›†æ ·æœ¬','FontSize',12);
+ylabel('ç±»åˆ«æ ‡ç­¾','FontSize',12);
+legend('å®é™…æµ‹è¯•é›†åˆ†ç±»','é¢„æµ‹æµ‹è¯•é›†åˆ†ç±»');
+% title('æµ‹è¯•é›†çš„å®é™…åˆ†ç±»å’Œé¢„æµ‹åˆ†ç±»å›¾','FontSize',12);
+title(['æœ€ç»ˆé¢„æµ‹å‡†ç¡®ç‡ï¼š',num2str(accuracy(1)),'%']);
 grid on;
-disp(['×îÖÕÔ¤²â×¼È·ÂÊ£º',num2str(accuracy(1))])
+disp(['æœ€ç»ˆé¢„æµ‹å‡†ç¡®ç‡ï¼š',num2str(accuracy(1))])
